@@ -18,7 +18,7 @@ load_dotenv()
 
 app = Flask(__name__)
 CORS(app,
-     origins=["http://localhost:4200"],
+     origins=["http://localhost:4200", "https://timeplanner-production.up.railway.app"],
      methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
      allow_headers=["Content-Type", "Authorization"],
      expose_headers=["Content-Disposition"])
@@ -30,6 +30,9 @@ app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=4)
 app.config["SQLALCHEMY_DATABASE_URI"] = (
     f"mysql+pymysql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}"
     f"@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}")
+app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+    "connect_args": {"connect_timeout": 5}
+}
 app.register_blueprint(reportes_bp, url_prefix="/api/reportes")
 app.register_blueprint(recordatorios_bp, url_prefix="/api/recordatorios")
 app.register_blueprint(admin_bp, url_prefix="/api/admin")
