@@ -1,0 +1,151 @@
+<div class="app-shell">
+  <div class="topbar">
+    <div class="topbar-logo"><div class="logo-icon">⏱</div> Time Planner</div>
+    <div class="topbar-right">
+      <app-alertas></app-alertas>
+      <div class="perfil-wrap" #perfilWrap>
+        <div class="user-pill" (click)="togglePerfil()">👤 {{ nombreUsuario }} ▾</div>
+        <div class="perfil-dropdown" *ngIf="perfilAbierto">
+          <div class="perfil-item">👤 {{ nombreUsuario }}</div>
+          <div class="perfil-item">📧 {{ correoUsuario }}</div>
+          <hr class="perfil-divider" />
+          <div class="perfil-item danger" (click)="cerrarSesion()">🚪 Cerrar sesión</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="app-body">
+    <!-- Sidebar reducido: el admin solo necesita este panel y salir -->
+    <div class="sidebar">
+      <div class="nav-item active">🛡️ Panel Admin</div>
+      <div class="nav-item" (click)="cerrarSesion()">🚪 Salir</div>
+    </div>
+
+    <div class="main-content">
+      <h2 class="page-title">Panel de administrador</h2>
+      <p class="page-subtitle">Gestión de usuarios registrados en Time Planner</p>
+
+      <!-- Tarjetas de resumen -->
+      <div class="stats-grid" *ngIf="!cargando">
+        <div class="stat-card">
+          <div class="stat-num">{{ totalUsuarios }}</div>
+          <div class="stat-label">Total usuarios</div>
+        </div>
+        <div class="stat-card stat-activo">
+          <div class="stat-num">{{ totalActivos }}</div>
+          <div class="stat-label">Activos</div>
+        </div>
+        <div class="stat-card stat-suspendido">
+          <div class="stat-num">{{ totalSuspendidos }}</div>
+          <div class="stat-label">Suspendidos</div>
+        </div>
+        <div class="stat-card stat-admin">
+          <div class="stat-num">{{ totalAdmins }}</div>
+          <div class="stat-label">Administradores</div>
+        </div>
+      </div>
+
+      <!-- Barra de filtros -->
+      <div class="filtros-bar" *ngIf="!cargando">
+        <div class="filtro-buscar">
+          <span class="icono-buscar">🔍</span>
+          <input
+            type="text"
+            placeholder="Buscar por nombre o correo..."
+            [(ngModel)]="textoBusqueda"
+          />
+        </div>
+        <select class="filtro-select" [(ngModel)]="filtroRol">
+          <option value="todos">Todos los roles</option>
+          <option value="usuario">Usuario</option>
+          <option value="admin">Admin</option>
+        </select>
+        <select class="filtro-select" [(ngModel)]="filtroEstado">
+          <option value="todos">Todos los estados</option>
+          <option value="activo">Activos</option>
+          <option value="suspendido">Suspendidos</option>
+        </select>
+        <button class="btn-limpiar" (click)="limpiarFiltros()">Limpiar filtros</button>
+      </div>
+
+      <!-- Barra de acciones en lote, solo aparece si hay algo seleccionado -->
+      <div class="acciones-lote" *ngIf="seleccionados.size > 0">
+        <span class="lote-texto">{{ seleccionados.size }} usuario(s) seleccionado(s)</span>
+        <button class="btn-eliminar-lote" (click)="eliminarSeleccionados()">
+          🗑️ Eliminar seleccionados
+        </button>
+      </div>
+
+      <div class="cargando" *ngIf="cargando">Cargando usuarios...</div>
+
+      <div class="tabla-wrap" *ngIf="!cargando">
+        <table>
+          <thead>
+            <tr>
+              <th class="th-check">
+                <input
+                  type="checkbox"
+                  [checked]="todosSeleccionados()"
+                  (change)="toggleSeleccionarTodos($event)"
+                />
+              </th>
+              <th>Usuario</th>
+              <th>Correo</th>
+              <th>Rol</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let u of usuariosFiltrados" [class.fila-seleccionada]="estaSeleccionado(u.id)">
+              <td class="th-check">
+                <input
+                  type="checkbox"
+                  [checked]="estaSeleccionado(u.id)"
+                  (change)="toggleSeleccion(u.id)"
+                  [disabled]="u.id === miId"
+                  [title]="u.id === miId ? 'No puedes seleccionar tu propia cuenta' : ''"
+                />
+              </td>
+              <td class="td-nombre">
+                <div class="usuario-cell">
+                  <div class="avatar" [ngClass]="u.rol === 'admin' ? 'avatar-admin' : 'avatar-usuario'">
+                    {{ iniciales(u.nombre_usuario) }}
+                  </div>
+                  {{ u.nombre_usuario }}
+                </div>
+              </td>
+              <td>{{ u.correo }}</td>
+              <td>
+                <span class="badge" [ngClass]="u.rol === 'admin' ? 'badge-admin' : 'badge-usuario'">
+                  {{ u.rol }}
+                </span>
+              </td>
+              <td>
+                <span class="badge" [ngClass]="u.activo ? 'badge-activo' : 'badge-suspendido'">
+                  {{ u.activo ? 'Activo' : 'Suspendido' }}
+                </span>
+              </td>
+              <td class="td-acciones">
+                <button
+                  class="btn-icon"
+                  (click)="toggleEstado(u)"
+                  [title]="u.activo ? 'Suspender' : 'Activar'"
+                >
+                  {{ u.activo ? '⛔' : '✅' }}
+                </button>
+                <button class="btn-icon delete" (click)="eliminarUsuario(u)" title="Eliminar">🗑️</button>
+              </td>
+            </tr>
+            <tr *ngIf="usuariosFiltrados.length === 0">
+              <td colspan="6" class="fila-vacia">
+                No hay usuarios que coincidan con los filtros
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

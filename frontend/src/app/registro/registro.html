@@ -1,0 +1,32 @@
+<div class="login-page">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="logo-icon">⏱</div>
+      <h1>Crear cuenta</h1>
+      <p>Empieza a organizar tu tiempo</p>
+    </div>
+    <div class="form-group">
+      <label>Nombre completo</label>
+      <input type="text" [(ngModel)]="nombre" placeholder="Tu nombre" />
+    </div>
+    <div class="form-group">
+      <label>Correo electrónico</label>
+      <input type="email" [(ngModel)]="correo" placeholder="tu@correo.com" />
+    </div>
+    <div class="form-group">
+      <label>Contraseña</label>
+      <input type="password" [(ngModel)]="contrasena" placeholder="••••••••" />
+    </div>
+    <div class="form-group">
+      <label>Confirmar contraseña</label>
+      <input type="password" [(ngModel)]="confirmar" placeholder="••••••••" />
+    </div>
+    <div class="error-msg" *ngIf="errorMsg">{{ errorMsg }}</div>
+    <div class="success-msg" *ngIf="successMsg">{{ successMsg }}</div>
+    <button class="btn-primary" (click)="registrar()" [disabled]="cargando">
+      {{ cargando ? 'Creando cuenta...' : 'Crear cuenta' }}
+    </button>
+    <hr class="divider" />
+    <p class="link-text">¿Ya tienes cuenta? <span (click)="irALogin()">Ingresar</span></p>
+  </div>
+</div>

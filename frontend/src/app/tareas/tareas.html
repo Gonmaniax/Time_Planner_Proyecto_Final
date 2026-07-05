@@ -1,0 +1,317 @@
+<div class="app-shell">
+  <div class="topbar">
+    <div class="topbar-left">
+      <button class="btn-hamburguesa" (click)="toggleMenuMovil()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/>
+        </svg>
+      </button>
+      <div class="topbar-logo">
+        <div class="logo-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+        <span class="topbar-titulo">Time Planner</span>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <app-alertas></app-alertas>
+      <div class="perfil-wrap" #perfilWrap>
+        <div class="user-pill" (click)="togglePerfil()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span class="user-pill-nombre">{{ nombreUsuario }}</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m6 9 6 6 6-6"/>
+          </svg>
+        </div>
+        <div class="perfil-dropdown" *ngIf="perfilAbierto">
+          <div class="perfil-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            {{ nombreUsuario }}
+          </div>
+          <div class="perfil-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            {{ correoUsuario }}
+          </div>
+          <hr class="perfil-divider" />
+          <div class="perfil-item danger" (click)="cerrarSesion()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+            Cerrar sesión
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BACKDROP MÓVIL -->
+  <div class="sidebar-backdrop" *ngIf="menuMovilAbierto" (click)="toggleMenuMovil()"></div>
+
+  <div class="app-body">
+    <div class="sidebar" [class.sidebar-abierto]="menuMovilAbierto">
+      <div class="nav-item" (click)="irA('dashboard')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Inicio
+      </div>
+      <div class="nav-item active">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Mis Tareas
+      </div>
+      <div class="nav-item" (click)="irA('cronometro')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></svg>
+        Cronómetro
+      </div>
+      <div class="nav-item" (click)="irA('recordatorios')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+        Recordatorios
+      </div>
+      <div class="nav-item" (click)="irA('reportes')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="20" y2="10"/><line x1="18" x2="18" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="16"/></svg>
+        Reportes
+      </div>
+      <div class="nav-item" (click)="irA('categorias')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg>
+        Categorías
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-item" (click)="cerrarSesion()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+        Salir
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="section-header">
+        <h2>Mis Tareas</h2>
+        <button class="btn-primary btn-nueva" (click)="abrirModal()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+          Nueva tarea
+        </button>
+      </div>
+
+      <div class="filtros">
+        <button *ngFor="let f of filtros"
+          [class.active]="filtroActivo === f"
+          (click)="filtroActivo = f"
+          class="chip">
+          {{ f }}
+        </button>
+        <button class="chip chip-icon"
+          [class.active]="filtroSoloHoy"
+          (click)="filtroSoloHoy = !filtroSoloHoy">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>
+          Hoy
+        </button>
+        <select class="chip-select" [(ngModel)]="filtroCategoria">
+          <option [value]="0">Todas las categorías</option>
+          <option *ngFor="let c of categorias" [value]="c.id">{{ c.nombre }}</option>
+        </select>
+
+        <select class="chip-select" [(ngModel)]="filtroPrioridad">
+          <option value="">Todas las prioridades</option>
+          <option value="alta">Alta</option>
+          <option value="media">Media</option>
+          <option value="baja">Baja</option>
+        </select>
+
+        <button class="chip chip-danger chip-icon"
+          *ngIf="seleccionadas.size > 0"
+          (click)="borrarSeleccionadas()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+          Borrar ({{ seleccionadas.size }})
+        </button>
+
+        <button class="chip chip-danger chip-icon"
+          *ngIf="hayFiltrosActivos"
+          (click)="limpiarFiltros()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          Limpiar filtros
+        </button>
+      </div>
+
+      <div class="tabla-wrap">
+        <div class="tabla-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:36px">
+                <input type="checkbox"
+                  [checked]="todasSeleccionadas()"
+                  (change)="toggleTodas()" />
+              </th>
+              <th (click)="ordenarPor('titulo')" class="th-sortable">
+                Tarea {{ ordenColumna === 'titulo' ? (ordenAsc ? '↑' : '↓') : '' }}
+              </th>
+              <th (click)="ordenarPor('categoria_nombre')" class="th-sortable">
+                Categoría {{ ordenColumna === 'categoria_nombre' ? (ordenAsc ? '↑' : '↓') : '' }}
+              </th>
+              <th>Tiempo</th>
+              <th (click)="ordenarPor('prioridad')" class="th-sortable">
+                Prioridad {{ ordenColumna === 'prioridad' ? (ordenAsc ? '↑' : '↓') : '' }}
+              </th>
+              <th (click)="ordenarPor('fecha_limite')" class="th-sortable">
+                Fecha {{ ordenColumna === 'fecha_limite' ? (ordenAsc ? '↑' : '↓') : '' }}
+              </th>
+              <th (click)="ordenarPor('estado')" class="th-sortable">
+                Estado {{ ordenColumna === 'estado' ? (ordenAsc ? '↑' : '↓') : '' }}
+              </th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let tarea of tareasFiltradas()"
+                [class.fila-seleccionada]="seleccionadas.has(tarea.id)">
+              <td>
+                <input type="checkbox"
+                  [checked]="seleccionadas.has(tarea.id)"
+                  (change)="toggleSeleccion(tarea.id)" />
+              </td>
+              <td class="td-nombre">{{ tarea.titulo }}</td>
+              <td>
+                <span class="tag">{{ tarea.categoria_nombre || 'Sin categoría' }}</span>
+              </td>
+              <td class="td-tiempo">{{ formatTiempo(tarea.tiempo_estimado_min) }}</td>
+              <td>
+                <span class="prioridad-badge" [ngClass]="'prioridad-' + tarea.prioridad.toLowerCase()">
+                  {{ tarea.prioridad }}
+                </span>
+              </td>
+              <td>
+                <span class="fecha-badge" [ngClass]="getFechaClase(tarea.fecha_limite)">
+                  {{ getFechaTexto(tarea.fecha_limite) }}
+                </span>
+              </td>
+              <td>
+                <span class="badge" [ngClass]="'badge-' + tarea.estado">
+                  {{ tarea.estado }}
+                </span>
+              </td>
+              <td class="td-acciones">
+                <button class="btn-icon completar"
+                  *ngIf="tarea.estado !== 'completada'"
+                  (click)="marcarCompletada(tarea)"
+                  title="Marcar como completada">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                </button>
+                <button class="btn-icon edit" (click)="editarTarea(tarea)" title="Editar">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+                </button>
+                <button class="btn-icon delete" (click)="eliminarTarea(tarea.id)" title="Eliminar">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="tareasFiltradas().length === 0">
+              <td colspan="8" style="text-align:center; padding: 24px; color: var(--tp-text-muted);">
+                No hay tareas aquí todavía
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CREAR / EDITAR -->
+<div class="modal-overlay" *ngIf="modalAbierto">
+  <div class="modal-box">
+    <div class="modal-title">
+      <span class="modal-title-texto">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <ng-container *ngIf="tareaEditando; else iconoNueva">
+            <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+          </ng-container>
+          <ng-template #iconoNueva>
+            <path d="M5 12h14"/><path d="M12 5v14"/>
+          </ng-template>
+        </svg>
+        {{ tareaEditando ? 'Editar tarea' : 'Nueva tarea' }}
+      </span>
+      <button class="modal-cerrar" (click)="cerrarModal()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+
+    <div class="form-group">
+      <label>Nombre de la tarea</label>
+      <input type="text" [(ngModel)]="forma.titulo" placeholder="Ej: Estudiar Angular" />
+      <small class="campo-error" *ngIf="intentoGuardar && !forma.titulo">
+        El nombre es obligatorio
+      </small>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Categoría</label>
+        <select [(ngModel)]="forma.id_categoria">
+          <option *ngFor="let c of categorias" [value]="c.id">{{ c.nombre }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Prioridad</label>
+        <select [(ngModel)]="forma.prioridad">
+          <option value="alta">Alta</option>
+          <option value="media">Media</option>
+          <option value="baja">Baja</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- SELECTOR DE TIEMPO -->
+    <div class="form-group">
+      <label>Tiempo estimado</label>
+      <div class="tiempo-opciones">
+        <button *ngFor="let op of tiempoOpciones"
+          class="tiempo-chip"
+          [class.active]="forma.tiempo_estimado_min === op.valor && !tiempoPersonalizado"
+          (click)="seleccionarTiempo(op.valor)">
+          {{ op.label }}
+        </button>
+        <button class="tiempo-chip tiempo-chip-icon"
+          [class.active]="tiempoPersonalizado"
+          (click)="activarTiempoPersonalizado()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+          Personalizado
+        </button>
+      </div>
+      <div *ngIf="tiempoPersonalizado" class="tiempo-personalizado">
+        <input type="number" [(ngModel)]="tiempoCustomValor"
+          placeholder="Cantidad" min="1" (ngModelChange)="actualizarTiempoCustom()" />
+        <select [(ngModel)]="tiempoCustomUnidad" (ngModelChange)="actualizarTiempoCustom()">
+          <option value="min">Minutos</option>
+          <option value="hora">Horas</option>
+        </select>
+      </div>
+      <div class="tiempo-resumen" *ngIf="forma.tiempo_estimado_min > 0">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        {{ formatTiempo(forma.tiempo_estimado_min) }}
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Fecha límite</label>
+        <input type="date" [(ngModel)]="forma.fecha_limite" />
+        <small class="campo-error" *ngIf="intentoGuardar && !forma.fecha_limite">
+          La fecha límite es obligatoria
+        </small>
+      </div>
+      <div class="form-group">
+        <label>Notas</label>
+        <textarea rows="2" [(ngModel)]="forma.descripcion" placeholder="Notas opcionales..."></textarea>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-primary btn-guardar"
+        (click)="guardarTarea()"
+        [disabled]="!forma.titulo || forma.tiempo_estimado_min <= 0 || !forma.fecha_limite">
+        Guardar tarea
+      </button>
+    </div>
+  </div>
+</div>

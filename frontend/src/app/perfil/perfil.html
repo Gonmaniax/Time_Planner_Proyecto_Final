@@ -1,0 +1,70 @@
+<div class="app-shell">
+  <div class="topbar">
+    <div class="topbar-logo"><div class="logo-icon">⏱</div> Time Planner</div>
+    <div class="topbar-right">
+      <app-alertas></app-alertas>
+      <div class="perfil-wrap" #perfilWrap>
+        <div class="user-pill" (click)="togglePerfil()">👤 {{ nombreUsuario }} ▾</div>
+        <div class="perfil-dropdown" *ngIf="perfilAbierto">
+          <div class="perfil-item">👤 {{ nombreUsuario }}</div>
+          <div class="perfil-item">📧 {{ correoUsuario }}</div>
+          <hr class="perfil-divider" />
+          <div class="perfil-item danger" (click)="cerrarSesion()">🚪 Cerrar sesión</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="app-body">
+    <div class="sidebar">
+      <div class="nav-item" (click)="irA('dashboard')">📊 Dashboard</div>
+      <div class="nav-item" (click)="irA('tareas')">✅ Mis Tareas</div>
+      <div class="nav-item" (click)="irA('cronometro')">⏳ Cronómetro</div>
+      <div class="nav-item" (click)="irA('recordatorios')">🔔 Recordatorios</div>
+      <div class="nav-item" (click)="irA('reportes')">📈 Reportes</div>
+      <div class="nav-item" (click)="irA('categorias')">🏷️ Categorías</div>
+      <div class="nav-divider"></div>
+      <div class="nav-item" (click)="cerrarSesion()">🚪 Salir</div>
+    </div>
+
+    <div class="main-content">
+      <h2 class="page-title">Configuración</h2>
+
+      <div class="perfil-box">
+        <h3>Datos personales</h3>
+        <div class="form-group">
+          <label>Nombre completo</label>
+          <input type="text" [(ngModel)]="forma.nombre_usuario" />
+        </div>
+        <div class="form-group">
+          <label>Correo electrónico</label>
+          <input type="email" [(ngModel)]="forma.correo" />
+        </div>
+        <button class="btn-primary" style="width:auto; padding:8px 20px;"
+          (click)="guardarDatos()" [disabled]="guardandoDatos">
+          {{ guardandoDatos ? 'Guardando...' : 'Guardar cambios' }}
+        </button>
+      </div>
+
+      <div class="perfil-box">
+        <h3>Cambiar contraseña</h3>
+        <div class="form-group">
+          <label>Contraseña actual</label>
+          <input type="password" [(ngModel)]="formaClave.actual" />
+        </div>
+        <div class="form-group">
+          <label>Nueva contraseña</label>
+          <input type="password" [(ngModel)]="formaClave.nueva" />
+        </div>
+        <div class="form-group">
+          <label>Confirmar nueva contraseña</label>
+          <input type="password" [(ngModel)]="formaClave.confirmar" />
+        </div>
+        <button class="btn-primary" style="width:auto; padding:8px 20px;"
+          (click)="cambiarClave()" [disabled]="guardandoClave">
+          {{ guardandoClave ? 'Guardando...' : 'Cambiar contraseña' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

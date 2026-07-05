@@ -1,0 +1,221 @@
+<div class="app-shell">
+  <div class="topbar">
+    <div class="topbar-left">
+      <button class="btn-hamburguesa" (click)="toggleMenuMovil()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/>
+        </svg>
+      </button>
+      <div class="topbar-logo">
+        <div class="logo-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+        <span class="topbar-titulo">Time Planner</span>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <app-alertas></app-alertas>
+      <div class="perfil-wrap" #perfilWrap>
+        <div class="user-pill" (click)="togglePerfil()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span class="user-pill-nombre">{{ nombreUsuario }}</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m6 9 6 6 6-6"/>
+          </svg>
+        </div>
+        <div class="perfil-dropdown" *ngIf="perfilAbierto">
+          <div class="perfil-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            {{ nombreUsuario }}
+          </div>
+          <div class="perfil-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            {{ correoUsuario }}
+          </div>
+          <hr class="perfil-divider" />
+          <div class="perfil-item danger" (click)="cerrarSesion()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+            Cerrar sesión
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BACKDROP MÓVIL -->
+  <div class="sidebar-backdrop" *ngIf="menuMovilAbierto" (click)="toggleMenuMovil()"></div>
+
+  <div class="app-body">
+    <div class="sidebar" [class.sidebar-abierto]="menuMovilAbierto">
+      <div class="nav-item" (click)="irA('dashboard')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Inicio
+      </div>
+      <div class="nav-item" (click)="irA('tareas')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Mis Tareas
+      </div>
+      <div class="nav-item" (click)="irA('cronometro')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></svg>
+        Cronómetro
+      </div>
+      <div class="nav-item" (click)="irA('recordatorios')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+        Recordatorios
+      </div>
+      <div class="nav-item active">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="20" y2="10"/><line x1="18" x2="18" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="16"/></svg>
+        Reportes
+      </div>
+      <div class="nav-item" (click)="irA('categorias')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg>
+        Categorías
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-item" (click)="cerrarSesion()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+        Salir
+      </div>
+    </div>
+
+    <div class="main-content">
+
+      <div class="section-header">
+        <div>
+          <h2>Reportes de productividad</h2>
+          <p class="semana-label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>
+            Semana del {{ fechaSemana }}
+          </p>
+        </div>
+        <div class="export-row">
+          <button class="export-btn pdf" (click)="exportar('pdf')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2v6h6"/><path d="M6 2h8l6 6v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/></svg>
+            PDF
+          </button>
+          <button class="export-btn excel" (click)="exportar('excel')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><line x1="3" x2="21" y1="9" y2="9"/><line x1="9" x2="9" y1="21" y2="9"/></svg>
+            Excel
+          </button>
+        </div>
+      </div>
+
+      <div class="cargando" *ngIf="cargando">Cargando reporte...</div>
+
+      <div *ngIf="!cargando">
+
+        <div class="metrics-row">
+          <div class="metric-card">
+            <div class="metric-num">{{ totalTareas }}</div>
+            <div class="metric-lbl">Total tareas</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-num completadas">{{ completadas }}</div>
+            <div class="metric-lbl">Completadas</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-num pendientes">{{ pendientes }}</div>
+            <div class="metric-lbl">Pendientes</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-num tiempo">{{ tiempoTotal }}</div>
+            <div class="metric-lbl">Tiempo trabajado</div>
+          </div>
+        </div>
+
+        <div class="report-grid">
+
+          <div class="report-box">
+            <h3>
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>
+              Actividad por día
+            </h3>
+            <div class="dias-wrap">
+              <div class="dia-col" *ngFor="let dia of porDia"
+                   [class.dia-hoy]="dia.es_hoy">
+                <div class="dia-bar-wrap">
+                  <div class="dia-bar"
+                       [style.height]="getAlturaBarra(dia.minutos)">
+                  </div>
+                </div>
+                <div class="dia-tiempo">{{ dia.tiempo_formato }}</div>
+                <div class="dia-nombre">{{ dia.nombre }}</div>
+                <div class="dia-fecha">{{ dia.fecha }}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="report-box">
+            <h3>
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg>
+              Tiempo por categoría
+            </h3>
+            <div *ngIf="porCategoria.length === 0" class="empty-report">
+              No hay datos esta semana
+            </div>
+            <div class="cat-row" *ngFor="let cat of porCategoria">
+              <div class="cat-header">
+                <span class="cat-nombre">{{ cat.nombre }}</span>
+                <span class="cat-tiempo">{{ cat.tiempo_formato }}</span>
+              </div>
+              <div class="prog-bar-outer">
+                <div class="prog-bar-inner"
+                     [style.width]="cat.porcentaje > 0 ? cat.porcentaje + '%' : '0%'"
+                     [style.opacity]="cat.porcentaje > 0 ? '1' : '0.2'">
+                </div>
+              </div>
+              <div class="cat-footer">
+                <span class="cat-pct">{{ cat.porcentaje }}% del tiempo</span>
+                <span class="cat-completadas">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                  {{ cat.completadas }} completadas
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="report-box full-width" *ngIf="detalleTareas.length > 0">
+            <h3>
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-3a2 2 0 0 1-2-2V2"/><path d="M9 18a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8.5L20 6.5V16a2 2 0 0 1-2 2Z"/><path d="M3 7.6v12.8A1.6 1.6 0 0 0 4.6 22h9.8"/></svg>
+              Detalle de tareas de la semana
+            </h3>
+            <div class="tabla-wrap" style="overflow-x:auto;">
+              <table class="tareas-tabla">
+                <thead>
+                  <tr>
+                    <th>Tarea</th>
+                    <th>Estado</th>
+                    <th>Estimado</th>
+                    <th>Real</th>
+                    <th>Diferencia</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let t of detalleTareas">
+                    <td class="td-titulo">{{ t.titulo }}</td>
+                    <td>
+                      <span class="badge" [ngClass]="'badge-' + t.estado">{{ getEstadoLabel(t.estado) }}</span>
+                    </td>
+                    <td>{{ t.tiempo_estimado }}</td>
+                    <td>{{ t.tiempo_real }}</td>
+                    <td [ngClass]="t.diferencia === null ? '' : (t.diferencia > 0 ? 'td-extra' : 'td-ok')">
+                      <ng-container *ngIf="t.diferencia !== null; else sinDato">
+                        {{ t.diferencia > 0 ? '+' + t.diferencia + ' min' : (t.diferencia === 0 ? 'Exacto' : t.diferencia + ' min') }}
+                      </ng-container>
+                      <ng-template #sinDato>—</ng-template>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
