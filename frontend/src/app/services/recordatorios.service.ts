@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, interval, switchMap, startWith, catchError, of, tap, Subscription } from 'rxjs';
 import { NotificacionService } from './notificaciones.services';
-
+import { environment } from '../environments/environment';
 export interface Recordatorio {
   id: number;
   id_tarea: number;
@@ -13,7 +13,7 @@ export interface Recordatorio {
   atendido: boolean;
 }
 
-const API_URL = 'http://localhost:5000/api/recordatorios';
+const API_URL = `${environment.apiUrl}/recordatorios`;
 
 @Injectable({ providedIn: 'root' })
 export class RecordatoriosService {
