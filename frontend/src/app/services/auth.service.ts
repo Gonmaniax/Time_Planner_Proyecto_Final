@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  private API = 'http://localhost:5000/api';
+  private API = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
