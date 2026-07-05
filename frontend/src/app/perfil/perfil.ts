@@ -21,6 +21,7 @@ export class Perfil implements OnInit, OnDestroy {
   nombreUsuario = '';
   correoUsuario = '';
   perfilAbierto = false;
+  menuMovilAbierto = false;
   @ViewChild('perfilWrap') perfilWrap?: ElementRef;
   private subPerfil?: Subscription;
 
@@ -119,7 +120,10 @@ export class Perfil implements OnInit, OnDestroy {
     this.notif.cerrarCampana();
     this.notif.togglePerfil();
   }
-
+  toggleMenuMovil() {
+  this.menuMovilAbierto = !this.menuMovilAbierto;
+  this.cdr.detectChanges();
+}
   @HostListener('document:click', ['$event'])
   clickFuera(event: MouseEvent) {
     if (
@@ -131,7 +135,10 @@ export class Perfil implements OnInit, OnDestroy {
     }
   }
 
-  irA(ruta: string) { this.router.navigate(['/' + ruta]); }
+  irA(ruta: string) {
+  this.menuMovilAbierto = false;
+  this.router.navigate(['/' + ruta]);
+}
 
   cerrarSesion() {
     this.recordatoriosService.detenerPolling();
