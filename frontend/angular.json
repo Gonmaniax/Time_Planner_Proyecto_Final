@@ -30,7 +30,7 @@
             ]
           },
           "configurations": {
-      "production": {
+     "production": {
   "budgets": [
     {
       "type": "initial",
@@ -50,7 +50,7 @@
       "with": "src/app/environments/environment.prod.ts"
     }
   ]
-},
+},,
             "development": {
               "optimization": false,
               "extractLicenses": false,
