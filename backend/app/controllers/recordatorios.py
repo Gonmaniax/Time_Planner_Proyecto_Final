@@ -7,11 +7,13 @@ from app.models.tarea import Tarea
 
 recordatorios_bp = Blueprint('recordatorios', __name__)
 
+
 def _recordatorio_de_usuario(id_recordatorio, id_usuario):
     recordatorio = Recordatorio.query.get(id_recordatorio)
     if not recordatorio or recordatorio.tarea.id_usuario != id_usuario:
         return None
     return recordatorio
+
 
 @recordatorios_bp.route('', methods=['POST'])
 @jwt_required()
@@ -29,13 +31,13 @@ def crear_recordatorio():
     if ya_existe:
         return jsonify({'error': 'Esta tarea ya tiene un recordatorio activo'}), 400
 
-   try:
-    fecha_hora = datetime.fromisoformat(datos['fecha_hora'])
-    ahora_colombia = datetime.utcnow() - timedelta(hours=5)
-    if fecha_hora <= ahora_colombia:
-        return jsonify({'error': 'La fecha debe ser en el futuro'}), 400
-except (KeyError, ValueError):
-    return jsonify({'error': 'fecha_hora inválida'}), 400
+    try:
+        fecha_hora = datetime.fromisoformat(datos['fecha_hora'])
+        ahora_colombia = datetime.utcnow() - timedelta(hours=5)
+        if fecha_hora <= ahora_colombia:
+            return jsonify({'error': 'La fecha debe ser en el futuro'}), 400
+    except (KeyError, ValueError):
+        return jsonify({'error': 'fecha_hora inválida'}), 400
 
     nuevo = Recordatorio(
         id_tarea=tarea.id,
@@ -46,6 +48,7 @@ except (KeyError, ValueError):
     db.session.commit()
     return jsonify(nuevo.to_dict()), 201
 
+
 @recordatorios_bp.route('', methods=['GET'])
 @jwt_required()
 def listar_recordatorios():
@@ -54,12 +57,13 @@ def listar_recordatorios():
         Recordatorio.query.join(Tarea)
         .filter(
             Tarea.id_usuario == id_usuario,
-            Recordatorio.activo.is_(True),   
+            Recordatorio.activo.is_(True),
         )
         .order_by(Recordatorio.fecha_hora.asc())
         .all()
     )
     return jsonify([r.to_dict() for r in recordatorios])
+
 
 @recordatorios_bp.route('/pendientes', methods=['GET'])
 @jwt_required()
@@ -67,9 +71,9 @@ def recordatorios_pendientes():
     id_usuario = int(get_jwt_identity())
     ahora_str = request.args.get('ahora')
     try:
-        ahora = datetime.fromisoformat(ahora_str) if ahora_str else datetime.now()
+        ahora = datetime.fromisoformat(ahora_str) if ahora_str else (datetime.utcnow() - timedelta(hours=5))
     except ValueError:
-        ahora = datetime.now()
+        ahora = datetime.utcnow() - timedelta(hours=5)
 
     pendientes = (
         Recordatorio.query.join(Tarea)
@@ -98,7 +102,7 @@ def recordatorios_pendientes():
         db.session.commit()
 
     return jsonify([r.to_dict() for r in pendientes])
-        
+
 
 @recordatorios_bp.route('/<int:id_recordatorio>', methods=['PUT'])
 @jwt_required()
@@ -110,9 +114,9 @@ def actualizar_recordatorio(id_recordatorio):
     datos = request.get_json()
     accion = datos.get('accion')
     if accion == 'posponer':
-            minutos = recordatorio.repetir_min or 5  # si no puso nada, 5 min por defecto (como las alarmas del celular)
-            recordatorio.fecha_hora = datetime.now() + timedelta(minutes=minutos)
-            recordatorio.atendido = False
+        minutos = recordatorio.repetir_min or 5
+        recordatorio.fecha_hora = datetime.now() + timedelta(minutes=minutos)
+        recordatorio.atendido = False
     elif accion == 'finalizar':
         recordatorio.atendido = True
         recordatorio.activo = False
@@ -127,6 +131,7 @@ def actualizar_recordatorio(id_recordatorio):
             recordatorio.activo = datos['activo']
     db.session.commit()
     return jsonify(recordatorio.to_dict())
+
 
 @recordatorios_bp.route('/<int:id_recordatorio>', methods=['DELETE'])
 @jwt_required()
