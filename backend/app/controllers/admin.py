@@ -2,6 +2,10 @@ from flask import Blueprint, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.models.database import db
 from app.models.usuario import Usuario
+from app.models.tarea import Tarea
+from app.models.recordatorio import Recordatorio
+from app.models.sesion_cronometro import SesionCronometro
+from app.models.categoria import Categoria
 
 admin_bp = Blueprint('admin_bp', __name__)
 
@@ -62,6 +66,16 @@ def eliminar_usuario(id):
     usuario = Usuario.query.get(id)
     if not usuario:
         return jsonify({"error": "Usuario no encontrado"}), 404
+
+    # Elimina primero todo lo que depende de este usuario,
+    # para no violar las llaves foráneas al borrar el usuario.
+    tareas = Tarea.query.filter_by(id_usuario=usuario.id).all()
+    for t in tareas:
+        SesionCronometro.query.filter_by(id_tarea=t.id).delete()
+        Recordatorio.query.filter_by(id_tarea=t.id).delete()
+        db.session.delete(t)
+
+    Categoria.query.filter_by(id_usuario=usuario.id).delete()
 
     db.session.delete(usuario)
     db.session.commit()
