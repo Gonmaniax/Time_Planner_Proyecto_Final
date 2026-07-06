@@ -71,9 +71,13 @@ guardar() {
       this.forma = { nombre: '' };
       this.modalAbierto = false;
       this.cargarCategorias();
+      this.notif.exito('Categoría creada correctamente');
       this.cdr.detectChanges();
     },
-    error: (err: any) => console.error('Error creando categoría:', err)
+    error: (err: any) => {
+      const mensaje = err.error?.error || 'No se pudo crear la categoría';
+      this.notif.error(mensaje);
+    }
   });
 }
 
@@ -100,9 +104,13 @@ guardarEdicion() {
       this.categoriaEditando = null;
       this.formaEditar = { nombre: '' };
       this.cargarCategorias();
+      this.notif.exito('Categoría actualizada correctamente');
       this.cdr.detectChanges();
     },
-    error: (err: any) => console.error('Error editando categoría:', err)
+    error: (err: any) => {
+      const mensaje = err.error?.error || 'No se pudo editar la categoría';
+      this.notif.error(mensaje);
+    }
   });
 }
 
