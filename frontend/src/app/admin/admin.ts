@@ -30,6 +30,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   nombreUsuario = '';
   correoUsuario = '';
   perfilAbierto = false;
+  menuMovilAbierto = false;
   @ViewChild('perfilWrap') perfilWrap?: ElementRef;
   private subPerfil?: Subscription;
 
@@ -225,6 +226,11 @@ export class AdminComponent implements OnInit, OnDestroy {
     this.notif.cerrarCampana();
     this.notif.togglePerfil();
   }
+
+  toggleMenuMovil() {
+  this.menuMovilAbierto = !this.menuMovilAbierto;
+  this.cdr.detectChanges();
+}
 
   @HostListener('document:click', ['$event'])
   clickFuera(event: MouseEvent) {
