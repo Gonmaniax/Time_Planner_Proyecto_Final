@@ -29,12 +29,13 @@ def crear_recordatorio():
     if ya_existe:
         return jsonify({'error': 'Esta tarea ya tiene un recordatorio activo'}), 400
 
-    try:
-        fecha_hora = datetime.fromisoformat(datos['fecha_hora'])
-        if fecha_hora <= datetime.now():
-            return jsonify({'error': 'La fecha debe ser en el futuro'}), 400
-    except (KeyError, ValueError):
-        return jsonify({'error': 'fecha_hora inválida'}), 400
+   try:
+    fecha_hora = datetime.fromisoformat(datos['fecha_hora'])
+    ahora_colombia = datetime.utcnow() - timedelta(hours=5)
+    if fecha_hora <= ahora_colombia:
+        return jsonify({'error': 'La fecha debe ser en el futuro'}), 400
+except (KeyError, ValueError):
+    return jsonify({'error': 'fecha_hora inválida'}), 400
 
     nuevo = Recordatorio(
         id_tarea=tarea.id,
