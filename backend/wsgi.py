@@ -13,7 +13,7 @@ from app.controllers.perfil import perfil_bp
 from app.extensions import mail
 from app.controllers.recuperacion import recuperacion_bp
 import socket
-import socket
+
 socket.getaddrinfo = lambda host, port, family=0, type=0, proto=0, flags=0, _orig=socket.getaddrinfo: _orig(host, port, socket.AF_INET, type, proto, flags)
 
 load_dotenv()
