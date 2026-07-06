@@ -249,6 +249,10 @@ export class AdminComponent implements OnInit, OnDestroy {
     localStorage.removeItem('usuario');
     this.router.navigate(['/login']);
   }
+  irA(ruta: string) {
+  this.menuMovilAbierto = false;
+  this.router.navigate(['/' + ruta]);
+}
 
   ngOnDestroy() {
     this.subPerfil?.unsubscribe();
