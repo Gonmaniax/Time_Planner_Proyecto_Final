@@ -1,25 +1,65 @@
 <div class="app-shell">
   <div class="topbar">
-    <div class="topbar-logo"><div class="logo-icon">⏱</div> Time Planner</div>
+    <div class="topbar-left">
+      <button class="btn-hamburguesa" (click)="toggleMenuMovil()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/>
+        </svg>
+      </button>
+      <div class="topbar-logo">
+        <div class="logo-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+        <span class="topbar-titulo">Time Planner</span>
+      </div>
+    </div>
     <div class="topbar-right">
       <app-alertas></app-alertas>
       <div class="perfil-wrap" #perfilWrap>
-        <div class="user-pill" (click)="togglePerfil()">👤 {{ nombreUsuario }} ▾</div>
+        <div class="user-pill" (click)="togglePerfil()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span class="user-pill-nombre">{{ nombreUsuario }}</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m6 9 6 6 6-6"/>
+          </svg>
+        </div>
         <div class="perfil-dropdown" *ngIf="perfilAbierto">
-          <div class="perfil-item">👤 {{ nombreUsuario }}</div>
-          <div class="perfil-item">📧 {{ correoUsuario }}</div>
+          <div class="perfil-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            {{ nombreUsuario }}
+          </div>
+          <div class="perfil-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            {{ correoUsuario }}
+          </div>
           <hr class="perfil-divider" />
-          <div class="perfil-item danger" (click)="cerrarSesion()">🚪 Cerrar sesión</div>
+          <div class="perfil-item danger" (click)="cerrarSesion()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+            Cerrar sesión
+          </div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- BACKDROP MÓVIL -->
+  <div class="sidebar-backdrop" *ngIf="menuMovilAbierto" (click)="toggleMenuMovil()"></div>
+
   <div class="app-body">
     <!-- Sidebar reducido: el admin solo necesita este panel y salir -->
-    <div class="sidebar">
-      <div class="nav-item active">🛡️ Panel Admin</div>
-      <div class="nav-item" (click)="cerrarSesion()">🚪 Salir</div>
+    <div class="sidebar" [class.sidebar-abierto]="menuMovilAbierto">
+      <div class="nav-item active">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Panel Admin
+      </div>
+      <div class="nav-item" (click)="cerrarSesion()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+        Salir
+      </div>
     </div>
 
     <div class="main-content">
@@ -49,7 +89,7 @@
       <!-- Barra de filtros -->
       <div class="filtros-bar" *ngIf="!cargando">
         <div class="filtro-buscar">
-          <span class="icono-buscar">🔍</span>
+          <svg class="icono-buscar" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
           <input
             type="text"
             placeholder="Buscar por nombre o correo..."
@@ -73,13 +113,15 @@
       <div class="acciones-lote" *ngIf="seleccionados.size > 0">
         <span class="lote-texto">{{ seleccionados.size }} usuario(s) seleccionado(s)</span>
         <button class="btn-eliminar-lote" (click)="eliminarSeleccionados()">
-          🗑️ Eliminar seleccionados
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+          Eliminar seleccionados
         </button>
       </div>
 
       <div class="cargando" *ngIf="cargando">Cargando usuarios...</div>
 
       <div class="tabla-wrap" *ngIf="!cargando">
+        <div class="tabla-scroll">
         <table>
           <thead>
             <tr>
@@ -133,9 +175,12 @@
                   (click)="toggleEstado(u)"
                   [title]="u.activo ? 'Suspender' : 'Activar'"
                 >
-                  {{ u.activo ? '⛔' : '✅' }}
+                  <svg *ngIf="u.activo" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c0392b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg>
+                  <svg *ngIf="!u.activo" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2e7d32" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
                 </button>
-                <button class="btn-icon delete" (click)="eliminarUsuario(u)" title="Eliminar">🗑️</button>
+                <button class="btn-icon delete" (click)="eliminarUsuario(u)" title="Eliminar">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+                </button>
               </td>
             </tr>
             <tr *ngIf="usuariosFiltrados.length === 0">
@@ -145,6 +190,7 @@
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   </div>
