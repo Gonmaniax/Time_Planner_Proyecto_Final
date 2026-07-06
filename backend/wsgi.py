@@ -12,8 +12,12 @@ from app.controllers.admin import admin_bp
 from app.controllers.perfil import perfil_bp
 from app.extensions import mail
 from app.controllers.recuperacion import recuperacion_bp
+import socket
 
 
+def _getaddrinfo_ipv4(host, port, family=0, type=0, proto=0, flags=0):
+    return _getaddrinfo_original(host, port, socket.AF_INET, type, proto, flags)
+socket.getaddrinfo = _getaddrinfo_ipv4
 load_dotenv()
 
 app = Flask(__name__)
